@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrado y Descifrado</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Estilos para colores claros */
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1, h2, h3 {
+            color: #444;
+        }
+
+        label {
+            color: #555;
+        }
+
+        input, select {
+            background-color: #e8f0fe;
+            color: #333;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #90caf9;
+        }
+
+        button {
+            background-color: #90caf9;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #42a5f5;
+        }
+
+        .result p {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+
+        .result button {
+            margin-top: 10px;
+            background-color: #64b5f6;
+            color: #fff;
+        }
+
+        .result button:hover {
+            background-color: #42a5f5;
+        }
+
+        .alert {
+            background-color: #e0f7fa;
+            color: #00796b;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Cifrado y Descifrado</h1>
+
+        <!-- Pestañas de selección -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="cesar-tab" data-toggle="tab" href="#cesar" role="tab"
+                    aria-controls="cesar" aria-selected="true">Cifrado César</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="clave-tab" data-toggle="tab" href="#clave" role="tab" aria-controls="clave"
+                    aria-selected="false">Cifrado con Clave</a>
+            </li>
+            <li class="nav-item"></li>
+                <a class="nav-link" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info"
+                    aria-selected="false">Información</a>
+            </li>
+        </ul>
+
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content" id="myTabContent">
+            <!-- Tab Cifrado César -->
+            <div class="tab-pane fade show active" id="cesar" role="tabpanel" aria-labelledby="cesar-tab">
+                <h2 class="mt-4">Cifrado y Descifrado César</h2>
+
+                <!-- Formulario para cifrar César -->
+                <form id="cesarFormCifrar">
+                    <div class="form-group">
+                        <label for="textCifrar">Texto a cifrar:</label>
+                        <input type="text" id="textCifrar" class="form-control" required pattern="[A-Za-z\s]+"
+                            title="Solo letras y espacios">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shiftCifrar">Desplazamiento:</label>
+                        <input type="number" id="shiftCifrar" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Cifrar</button>
+                </form>
+
+                <div class="result">
+                    <h3>Texto Cifrado:</h3>
+                    <p id="resultTextCifrar"></p>
+                    <button id="copyCifradoBtn" class="btn">Copiar Texto Cifrado</button>
+                </div>
+
+
+                <!-- Formulario para descifrar César -->
+                <form id="cesarFormDescifrar" class="mt-4">
+                    <div class="form-group">
+                        <label for="textDescifrar">Texto a descifrar:</label>
+                        <input type="text" id="textDescifrar" class="form-control" required pattern="[A-Za-z\s]+"
+                            title="Solo letras y espacios">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shiftDescifrar">Desplazamiento:</label>
+                        <input type="number" id="shiftDescifrar" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Descifrar</button>
+                </form>
+
+                <div class="result">
+                    <h3>Texto Descifrado:</h3>
+                    <p id="resultTextDescifrar"></p>
+                    <button id="copyDescifradoBtn" class="btn">Copiar Texto Descifrado</button>
+                </div>
+
+            </div>
+
+            <!-- Tab Cifrado con Clave -->
+            <div class="tab-pane fade" id="clave" role="tabpanel" aria-labelledby="clave-tab">
+                <h2 class="mt-4">Cifrado y Descifrado con Clave</h2>
+
+                <form id="cipherForm">
+                    <div class="form-group">
+                        <label for="message">Mensaje:</label>
+                        <input type="text" id="message" class="form-control" required pattern="[A-Za-z\s]+"
+                            title="Solo letras y espacios">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="key">Clave (Número de columnas):</label>
+                        <input type="number" id="key" class="form-control" required min="1">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Cifrar</button>
+
+                    <div class="result">
+                        <h3>Mensaje Cifrado:</h3>
+                        <p id="resultText"></p>
+                        <button id="copyMessageBtn" class="btn">Copiar Mensaje Cifrado</button>
+                    </div>
+
+                    <div class="matrix">
+                        <h3>Matriz (Cifrado):</h3>
+                        <table id="matrixDisplay" class="table table-bordered"></table>
+                    </div>
+                </form>
+
+                <!-- Formulario para descifrar con clave -->
+                <form id="decipherForm" class="mt-4">
+                    <div class="form-group">
+                        <label for="decipherMessage">Mensaje Cifrado:</label>
+                        <input type="text" id="decipherMessage" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="decipherKey">Clave (Número de columnas):</label>
+                        <input type="number" id="decipherKey" class="form-control" required min="1">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Descifrar</button>
+                    <div class="result">
+                        <h3>Mensaje Descifrado:</h3>
+                        <p id="decipherResultText"></p>
+                        <button id="copyDecipherMessageBtn" class="btn">Copiar Mensaje Descifrado</button>
+                    </div>
+
+
+                    <div class="matrix">
+                        <h3>Matriz (Descifrado):</h3>
+                        <table id="decipherMatrixDisplay" class="table table-bordered"></table>
+                    </div>
+                </form>
+            </div>
+            <!-- Nueva Tab Información -->
+            <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+                <!-- Información adicional -->
+                <h3>Guía sobre los Cifrados César y Escítala</h3>
+                <p>
+                    En esta aplicación, se ofrecen dos tipos de cifrado: el <strong>Cifrado César</strong> y el <strong>Cifrado Escítala</strong>. 
+                    A continuación se explica brevemente cada uno:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Cifrado César:</strong> Es un método de cifrado por sustitución en el cual cada letra del texto original es reemplazada por otra letra que se encuentra un número fijo de posiciones más adelante en el alfabeto.
+                    </li>
+                    <li>
+                        <strong>Cifrado Escítala:</strong> Es un método de cifrado basado en transposición, donde el mensaje es escrito en una cinta que se enrolla alrededor de un cilindro (escítala) de un cierto diámetro. Luego, el mensaje se desenrolla y las letras aparecen en desorden, pero puede ser descifrado utilizando un cilindro de igual diámetro.
+                    </li>
+                </ul>
+            
+                <h3>Comparación de Ambos Cifrados</h3>
+                <p>
+                    Ambos cifrados tienen diferentes enfoques para proteger la información:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Cifrado César:</strong> Simple y rápido, pero fácilmente vulnerable a ataques de fuerza bruta o análisis de frecuencia, debido a su número limitado de posibles desplazamientos (26 para el alfabeto latino).
+                    </li>
+                    <li>
+                        <strong>Cifrado Escítala:</strong> Ofrece mayor seguridad que el César al depender de la longitud del mensaje y la cantidad de columnas, pero sigue siendo vulnerable si el patrón de transposición es conocido o adivinable.
+                    </li>
+                </ul>
+            
+                <h3>Análisis de Seguridad</h3>
+                <p>
+                    Ambos métodos son considerados débiles en comparación con los cifrados modernos. Hoy en día, se recomiendan algoritmos más complejos y seguros como AES o RSA, que ofrecen una mayor resistencia a ataques criptográficos.
+                </p>
+            
+                <h3>Mejoras en la Interfaz de Usuario (UI)</h3>
+                <p>
+                    La interfaz de esta aplicación ha sido diseñada para facilitar el uso de los cifrados. A través de un diseño intuitivo, el usuario puede:
+                </p>
+                <ul>
+                    <li>Seleccionar el tipo de cifrado que desea utilizar.</li>
+                    <li>Ingresar fácilmente los textos y parámetros necesarios.</li>
+                    <li>Copiar los textos cifrados o descifrados con un solo clic.</li>
+                    <li>Visualizar una matriz que representa el proceso de transposición en el cifrado Escítala.</li>
+                </ul>
+            </div>
+            
+
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   
+
+    <!-- Tus scripts -->
+    <script src="script.js"></script>
+    <script src="script2.js"></script>
+    
+</body>
+
+</html>
