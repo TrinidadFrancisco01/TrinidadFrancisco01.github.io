@@ -102,3 +102,38 @@ function columnarDecipher(message, key) {
 
     return { resultText: result, matrixDisplay }; // Devolver la matriz como HTML
 }
+
+ // Manejar la respuesta de Express
+ document.getElementById('expressForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Evita el comportamiento por defecto del formulario
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // Convertir FormData a un objeto
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
+    fetch(form.action, {
+        method: form.method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('expressResponse').innerText = data.mensaje;
+        })
+        .catch(error => {
+            document.getElementById('expressResponse').innerText = error.mensaje || 'Ocurrió un error.';
+            console.error('Error:', error);
+        });
+});

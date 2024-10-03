@@ -25,7 +25,9 @@
             margin: auto;
         }
 
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             color: #444;
         }
 
@@ -33,7 +35,8 @@
             color: #555;
         }
 
-        input, select {
+        input,
+        select {
             background-color: #e8f0fe;
             color: #333;
             border: 1px solid #ced4da;
@@ -43,7 +46,8 @@
             width: 100%;
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: #90caf9;
         }
@@ -87,6 +91,33 @@
             margin-top: 10px;
             text-align: center;
         }
+
+        .result {
+            max-width: 600px;
+            /* Cambia esto según tus necesidades */
+            margin: 0 auto;
+            /* Centra el contenedor en la página */
+            padding: 10px;
+            /* Agrega un poco de espacio interno */
+            border: 1px solid #ccc;
+            /* Añade un borde para visualización */
+            border-radius: 5px;
+            /* Bordes redondeados */
+            overflow-wrap: break-word;
+            /* Asegúrate de que el texto se ajuste */
+        }
+
+        #expressResponse {
+            word-wrap: break-word;
+            /* Permite que el texto largo se divida */
+        }
+
+        #expressResponse {
+            max-width: 100%;
+            /* Asegúrate de que no exceda el ancho del contenedor */
+            overflow-x: auto;
+            /* Permite el desplazamiento horizontal si es necesario */
+        }
     </style>
 </head>
 
@@ -102,9 +133,17 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="clave-tab" data-toggle="tab" href="#clave" role="tab" aria-controls="clave"
-                    aria-selected="false">Cifrado con Escitala</a>
+                    aria-selected="false">Cifrado con Clave</a>
             </li>
-            <li class="nav-item"></li>
+            <li class="nav-item">
+                <a class="nav-link" id="express-tab" data-toggle="tab" href="#express" role="tab"
+                    aria-controls="express" aria-selected="false">Express</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="nestjs-tab" data-toggle="tab" href="#nestjs" role="tab" aria-controls="nestjs"
+                    aria-selected="false">NestJS</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info"
                     aria-selected="false">Información</a>
             </li>
@@ -165,7 +204,7 @@
 
             <!-- Tab Cifrado con Clave -->
             <div class="tab-pane fade" id="clave" role="tabpanel" aria-labelledby="clave-tab">
-                <h2 class="mt-4">Cifrado y Descifrado con Escitala</h2>
+                <h2 class="mt-4">Cifrado y Descifrado con Clave</h2>
 
                 <form id="cipherForm">
                     <div class="form-group">
@@ -219,44 +258,253 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Nueva Tab Express con secciones seleccionables -->
+            <div class="tab-pane fade" id="express" role="tabpanel" aria-labelledby="express-tab">
+                <h2 class="mt-4">Express</h2>
+
+                <!-- Sub-pestañas internas para Express -->
+                <ul class="nav nav-tabs" id="expressSubTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="express-form-tab" data-toggle="tab" href="#express-form"
+                            role="tab" aria-controls="express-form" aria-selected="true">Formulario Cifrar</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="decrypt-form-tab" data-toggle="tab" href="#decrypt-form" role="tab"
+                            aria-controls="decrypt-form" aria-selected="false">Formulario Descifrar</a>
+                    </li>
+                </ul>
+
+                <!-- Contenido de las sub-pestañas -->
+                <div class="tab-content mt-3" id="expressSubTabContent">
+                    <!-- Sección Formulario -->
+                    <!-- Sección Cifrar -->
+                    <div class="tab-pane fade show active" id="express-form" role="tabpanel"
+                        aria-labelledby="express-form-tab">
+                        <h3>Formulario para Express</h3>
+
+                        <!-- Formulario que envía datos para cifrar, a un servidor Express -->
+                        <form id="expressForm" action="http://localhost:3000/express-endpoint" method="POST">
+
+
+                            <!-- Datos Personales -->
+                            <div class="form-field">
+                                <label for="nombre">Nombre completo:</label>
+                                <input type="text" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="email">Correo electrónico:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="text" id="telefono" name="telefono">
+                            </div>
+                            <div class="form-field">
+                                <label for="direccion">Dirección:</label>
+                                <input type="text" id="direccion" name="direccion">
+                            </div>
+                            <div class="form-field">
+                                <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+                                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+                            </div>
+
+                            <!-- Datos Sensibles -->
+                            <div class="form-field">
+                                <label for="dni">DNI / Número de identificación:</label>
+                                <input type="text" id="dni" name="dni" required>
+                                <!-- 
+                Este campo (DNI) debe ser **Cifrado Simétrico** en el servidor.
+                Utiliza AES
+            -->
+                            </div>
+                            <div class="form-field">
+                                <label for="contrasena">Contraseña:</label>
+                                <input type="password" id="contrasena" name="contrasena" required>
+                                <!-- 
+                Este campo (Contraseña) debe ser **Hasheado** en el servidor.
+                Utiliza MD5
+            -->
+                            </div>
+                            <div class="form-field">
+                                <label for="tarjeta_credito">Número de tarjeta de crédito:</label>
+                                <input type="text" id="tarjeta_credito" name="tarjeta_credito">
+                                <!-- 
+                Este campo (Tarjeta de Crédito) debe ser **Cifrado Asimétrico** en el servidor.
+                Utiliza RSA
+            -->
+                            </div>
+
+
+
+                            <button type="submit" class="btn btn-primary">Cifrar</button>
+                        </form>
+
+                        <div class="result mt-3">
+                            <h3>Respuesta de Express:</h3>
+                            <ul id="expressResponse" class="max-w-md overflow-x-auto">
+                                <!-- Aquí se añadirán los elementos -->
+                            </ul>
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- Sección Descifrar -->
+                    <div class="tab-pane fade" id="decrypt-form" role="tabpanel" aria-labelledby="decrypt-form-tab">
+                        <!-- Formulario para Descifrar -->
+                        <form id="decryptForm" action="http://localhost:3000/decrypt-endpoint" method="POST">
+                            <div class="form-group">
+                                <label for="emailDecrypt">Email</label>
+                                <input type="email" class="form-control" id="emailDecrypt" name="email"
+                                    placeholder="Ingresa tu email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dni">DNI</label>
+                                <input type="text" class="form-control" id="dni" name="dni1"
+                                    placeholder="Ingresa tu DNI" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <input type="password" class="form-control" id="password" name="password1"
+                                    placeholder="Ingresa tu contraseña" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="creditCard">Número de Tarjeta de Crédito</label>
+                                <input type="text" class="form-control" id="creditCard" name="creditCard1"
+                                    placeholder="Ingresa tu número de tarjeta" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Descifrar</button>
+                        </form>
+
+
+                        <div class="result mt-3">
+                            <h3>Respuesta de Express:</h3>
+                            <ul id="expressResponse1" class="max-w-md overflow-x-auto">
+                                <!-- Aquí se añadirán los elementos -->
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tab NestJS -->
+            <div class="tab-pane fade" id="nestjs" role="tabpanel" aria-labelledby="nestjs-tab">
+                <h2 class="mt-4">NestJS</h2>
+                <!-- Formulario que envía datos a un servidor NestJS -->
+                <form id="nestjsForm" action="http://localhost:3001/nestjs-endpoint" method="POST">
+
+                    <div class="form-group">
+                        <label for="dni">DNI:</label>
+                        <input type="text" id="dni" name="dni" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contrasena">Contraseña:</label>
+                        <input type="password" id="contrasena" name="contrasena" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tarjeta">Tarjeta de crédito:</label>
+                        <input type="number" id="tarjeta" name="tarjeta" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enviar a NestJS</button>
+                </form>
+                <div class="result mt-3">
+                    <h3>Respuesta de nest:</h3>
+                    <ul id="nestResponse" class="max-w-md overflow-x-auto">
+                        <!-- Aquí se añadirán los elementos -->
+                    </ul>
+                </div>
+
+
+
+            </div>
+
+
+
             <!-- Nueva Tab Información -->
             <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                 <!-- Información adicional -->
                 <h3>Guía sobre los Cifrados César y Escítala</h3>
                 <p>
-                    En esta aplicación, se ofrecen dos tipos de cifrado: el <strong>Cifrado César</strong> y el <strong>Cifrado Escítala</strong>. 
+                    En esta aplicación, se ofrecen dos tipos de cifrado: el <strong>Cifrado César</strong> y el
+                    <strong>Cifrado Escítala</strong>.
                     A continuación se explica brevemente cada uno:
                 </p>
                 <ul>
                     <li>
-                        <strong>Cifrado César:</strong> Es un método de cifrado por sustitución en el cual cada letra del texto original es reemplazada por otra letra que se encuentra un número fijo de posiciones más adelante en el alfabeto.
+                        <strong>Cifrado César:</strong> Es un método de cifrado por sustitución en el cual cada
+                        letra del texto original es reemplazada por otra letra que se encuentra un número fijo de
+                        posiciones más adelante en el alfabeto.
                     </li>
                     <li>
-                        <strong>Cifrado Escítala:</strong> Es un método de cifrado basado en transposición, donde el mensaje es escrito en una cinta que se enrolla alrededor de un cilindro (escítala) de un cierto diámetro. Luego, el mensaje se desenrolla y las letras aparecen en desorden, pero puede ser descifrado utilizando un cilindro de igual diámetro.
+                        <strong>Cifrado Escítala:</strong> Es un método de cifrado basado en transposición, donde el
+                        mensaje es escrito en una cinta que se enrolla alrededor de un cilindro (escítala) de un
+                        cierto diámetro. Luego, el mensaje se desenrolla y las letras aparecen en desorden, pero puede
+                        ser
+                        descifrado utilizando un cilindro de igual diámetro.
                     </li>
                 </ul>
-            
+
                 <h3>Comparación de Ambos Cifrados</h3>
                 <p>
                     Ambos cifrados tienen diferentes enfoques para proteger la información:
                 </p>
                 <ul>
                     <li>
-                        <strong>Cifrado César:</strong> Simple y rápido, pero fácilmente vulnerable a ataques de fuerza bruta o análisis de frecuencia, debido a su número limitado de posibles desplazamientos (26 para el alfabeto latino).
+                        <strong>Cifrado César:</strong> Simple y rápido, pero fácilmente vulnerable a ataques de
+                        fuerza bruta o análisis de frecuencia, debido a su número limitado de posibles desplazamientos
+                        (26
+                        para el alfabeto latino).
                     </li>
                     <li>
-                        <strong>Cifrado Escítala:</strong> Ofrece mayor seguridad que el César al depender de la longitud del mensaje y la cantidad de columnas, pero sigue siendo vulnerable si el patrón de transposición es conocido o adivinable.
+                        <strong>Cifrado Escítala:</strong> Ofrece mayor seguridad que el César al depender de la
+                        longitud del mensaje y la cantidad de columnas, pero sigue siendo vulnerable si el patrón de
+                        transposición es conocido o adivinable.
                     </li>
                 </ul>
-            
+
                 <h3>Análisis de Seguridad</h3>
                 <p>
-                    Ambos métodos son considerados débiles en comparación con los cifrados modernos. Hoy en día, se recomiendan algoritmos más complejos y seguros como AES o RSA, que ofrecen una mayor resistencia a ataques criptográficos.
+                    Ambos métodos son considerados débiles en comparación con los cifrados modernos. Hoy en día, se
+                    recomiendan algoritmos más complejos y seguros como AES o RSA, que ofrecen una mayor resistencia
+                    a ataques criptográficos.
                 </p>
-            
+
+                <h3>Comparación entre NestJS y Express</h3>
+                <p>
+                    En el desarrollo del backend de esta aplicación, se han considerado dos frameworks populares:
+                    <strong>NestJS</strong> y <strong>Express</strong>. A continuación, se detallan las diferencias
+                    entre ambos en cuanto a tiempo de respuesta:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Express:</strong> Es un framework minimalista para Node.js que proporciona una gran
+                        flexibilidad y rapidez en el desarrollo. Debido a su naturaleza ligera, Express tiende a tener
+                        tiempos de respuesta más rápidos en aplicaciones simples o de bajo tráfico, ya que introduce
+                        poca sobrecarga.
+                    </li>
+                    <li>
+                        <strong>NestJS:</strong> Aunque construido sobre Express (por defecto) o Fastify, NestJS ofrece
+                        una arquitectura más estructurada y modular, lo que puede introducir una ligera sobrecarga en el
+                        tiempo de respuesta. Sin embargo, esta sobrecarga es generalmente mínima y se compensa con una
+                        mayor escalabilidad y mantenibilidad en aplicaciones de mayor complejidad. Además, NestJS
+                        permite utilizar Fastify como alternativa a Express, lo que puede mejorar los tiempos de
+                        respuesta gracias a su mayor rendimiento.
+                    </li>
+                </ul>
+
                 <h3>Mejoras en la Interfaz de Usuario (UI)</h3>
                 <p>
-                    La interfaz de esta aplicación ha sido diseñada para facilitar el uso de los cifrados. A través de un diseño intuitivo, el usuario puede:
+                    La interfaz de esta aplicación ha sido diseñada para facilitar el uso de los cifrados. A través
+                    de
+                    un diseño intuitivo, el usuario puede:
                 </p>
                 <ul>
                     <li>Seleccionar el tipo de cifrado que desea utilizar.</li>
@@ -265,21 +513,22 @@
                     <li>Visualizar una matriz que representa el proceso de transposición en el cifrado Escítala.</li>
                 </ul>
             </div>
-            
 
-        </div>
-    </div>
-    
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-   
 
-    <!-- Tus scripts -->
-    <script src="script.js"></script>
-    <script src="script2.js"></script>
-    
+            <!-- Bootstrap JS and dependencies -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+            <!-- Tus scripts -->
+            <script src="./script-nest.js"></script>
+
+            <script src="./script_Express.js"></script>
+            <script src="./script_Express2.js"></script>
+            <script src="script.js"></script>
+            <script src="script2.js"></script>
+
+
 </body>
 
 </html>
